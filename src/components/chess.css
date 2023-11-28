@@ -1,0 +1,47 @@
+
+.board{
+    margin:none;
+    padding:none;
+    align-items: center;
+    justify-content: center;
+}
+.main{
+    display: flex;
+    margin:50px;
+    padding:none;
+    align-items: center;
+    justify-content: center;
+}
+body{
+    background-color: #303030;
+}
+.title{
+    text-align: center;
+    color:#0afaff;
+}
+.space{
+    display: flex;
+    margin:none;
+    padding:none;
+    width:100px;
+    height:100px;
+    align-items: center;
+    justify-content: center;
+}
+.black{
+    background-color: black;
+}
+.white{
+    background-color: white;
+}
+.option{
+    background-color: red;
+}
+.pblack{
+    color:#555555;
+    font-size: 50px;
+}
+.pwhite{
+    color:#0acacf;
+    font-size: 50px;
+}
