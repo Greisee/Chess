@@ -12,6 +12,7 @@ function Board(props){
     useEffect(()=>{
         startBoard();
     },[]);
+    //init functions---------------------------------------------------------------
     function startBoard(){
         let res=[]
         for(let i=0;i<8;i++){
@@ -26,33 +27,40 @@ function Board(props){
         setBoard(res);
     }
     function spawnPieces(bord){
-        bord[0][4].piece="K"
-        bord[7][4].piece="K"
-        bord[0][3].piece="Q"
-        bord[7][3].piece="Q"
-        for(let j=0;j<2;j++){
+            for(let j=0;j<2;j++){
+            bord[(j+7)%8][4].piece="K";
+            bord[(j+7)%8][3].piece="Q";
             for(let i=0;i<8;i++){
-                bord[1][i].piece="p"
-                bord[6][i].piece="p"
+                bord[1][i].piece="p";
+                bord[6][i].piece="p";
                 
-                bord[j][i].pieceColor="black"
-                bord[7-j][i].pieceColor="white"
+                bord[j][i].pieceColor="black";
+                bord[7-j][i].pieceColor="white";
             }
             for(let k=0;k<2;k++){
-                bord[(j+7)%8][(k+7)%8].piece="R"
-                bord[(j+7)%8][1+(5*k)].piece="N"
-                bord[(j+7)%8][2+(3*k)].piece="B"
+                bord[(j+7)%8][(k+7)%8].piece="R";
+                bord[(j+7)%8][1+(5*k)].piece="N";
+                bord[(j+7)%8][2+(3*k)].piece="B";
             }
         }
         return bord
     }
+    //on click functions-------------------------------------------------------
     function getMoves(sd){
         if((sd.pieceColor==="white")===turn){
             let result=sortMove(sd);
+            if(sd.piece==="K"){
+                result.forEach((m,ind)=>{
+                    if(isInCheck(m,sd.pieceColor,board)){
+                        result.splice(ind,1);
+                    }
+                })
+            }
+            
             if(result.length>0){
                 hlMoves(board,result);
-                setIsPieceClicked(true)
-                setPieceClicked(sd)
+                setIsPieceClicked(true);
+                setPieceClicked(sd);
             } 
         }
         
@@ -64,20 +72,20 @@ function Board(props){
                 result=getPawnMoves(sd);
                 break;
             case "N":
-                result=getKnightMoves(sd)
+                result=getKnightMoves(sd);
                 break;
             case "B":
-                result=getBishopMoves(sd)
+                result=getBishopMoves(sd);
                 break;
             case "R":
-                result=getRookMoves(sd)
+                result=getRookMoves(sd);
                 break;
             case "Q" :
-                result=getBishopMoves(sd)
-                result=result.concat(getRookMoves(sd))
+                result=getBishopMoves(sd);
+                result=result.concat(getRookMoves(sd));
                 break;
             case "K" :
-                result=getKingMoves(sd)
+                result=getKingMoves(sd);                
                 break;
         }
         return result;
@@ -115,14 +123,14 @@ function Board(props){
                 bord[pieceClicked.y][pieceClicked.x].piece="None"
                 setTurn(!turn)
             }
-        })    
-        
+        })
         bord=clearMoves(bord)    
         setBoard(bord)
         setIsPieceClicked(false)
         setPieceClicked(null)
-        //setTimeout(()=>console.log(isInCheck(board[0][4])),2000)
+        //check checkmate here
     }
+    //moves per peice----------------------------------------------------------
     function getPawnMoves(sd){
         let res=[]
         let mult=1;
@@ -230,19 +238,24 @@ function Board(props){
         }
         return res
     }
-    function isInCheck(space){
-        console.log(space)
-        board.forEach(r=>{
+    //check/checkmate-----------------------------------------------------------
+    function isInCheck(space,pcol,bord){
+        let res=false
+        bord.forEach(r=>{
             r.forEach(s=>{
-                if(s.piece!="None"&&(s.pieceColor!==space.pieceColor)){
-                    if(sortMove(s).includes(space)){
-                        return true;
-                    }
+                if(s.piece!=="None"&&s.pieceColor!==pcol){
+                    let movs=sortMove(s)
+                    movs.forEach((m)=>{
+                        if(m[0]===space[0]&&m[1]===space[1]){
+                            res=true;
+                        }
+                    })
                 }
-            })
+            })            
         })
-        return false
+        return res
     }
+    //utility/visual changes//-------------------------------------------------
     function hlMoves(bord, movs){
         movs.forEach(m=>{
             bord[m[0]][m[1]].isOption=true
