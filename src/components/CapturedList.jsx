@@ -1,27 +1,28 @@
 import {React,useState,useEffect} from "react";
 import "./CapturedList.css";
-import wK from "./images/wK.png"
-import wQ from "./images/wQ.png"
-import wR from "./images/wR.png"
-import wB from "./images/wB.png"
-import wN from "./images/wN.png"
-import wp from "./images/wp.png"
-
-import bK from "./images/bK.png"
-import bQ from "./images/bQ.png"
-import bR from "./images/bR.png"
-import bB from "./images/bB.png"
-import bN from "./images/bN.png"
-import bp from "./images/bp.png"
+import Icons from "./Icons.jsx"
 
 
 function CapturedList(props){
-    const[Piece,setPiece]=useState("");
-    const[isOption,setIsOption]=useState(false);
-    const[PieceColor,setPieceColor]=useState("none");
-    useEffect(()=>{
-        setPiece(props.piece);
-    },[props.piece]);
+    const[wCap,setWCap]=useState([]);
+    const[bCap,setBCap]=useState([]);
+    function addCap(p,col){
+        let v=0;
+        switch(p){
+            case "P": v=1;
+            case "N":v=3;
+            case "B":v=3;
+            case "R":v=5;
+            case "Q":v=9;
+        }
+        let cd=new capData(p,col,v);
+        if(col==="white"){
+            wCap.push(cd);
+        }
+        else{
+            bCap.push(cd);
+        }
+    }
     return(
         <div className="mainCL">
             <div className="w CL">
@@ -32,5 +33,10 @@ function CapturedList(props){
             </div>
         </div>
     )
+}
+class capData{
+    constructor(p,col,val){
+
+    }
 }
 export default CapturedList;

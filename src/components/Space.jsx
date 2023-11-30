@@ -1,6 +1,6 @@
 import {React,useState,useEffect} from "react";
 import "./chess.css";
-import "./Images.jsx";
+import Icons from "./Icons.jsx";//this is actually used, see eval(Icon)....
 
 function Space(props){
     const[Piece,setPiece]=useState("");
@@ -15,56 +15,10 @@ function Space(props){
     useEffect(()=>{
         setIsOption(props.isOption);
     },[props.isOption]);
-    function getIMG(){
-            switch(Piece){
-                case "K":
-                    if(PieceColor==="white"){
-                        return wK;
-                    }
-                    else{
-                        return bK;
-                    }
-                case "Q":
-                    if(PieceColor==="white"){
-                        return wQ;
-                    }
-                    else{
-                        return bQ;
-                    }
-                case "R":
-                    if(PieceColor==="white"){
-                        return wR;
-                    }
-                    else{
-                        return bR;
-                    }
-                case "B":
-                    if(PieceColor==="white"){
-                        return wB;
-                    }
-                    else{
-                        return bB;
-                    }
-                case "N":
-                    if(PieceColor==="white"){
-                        return wN;
-                    }
-                    else{
-                        return bN;
-                    }
-                case "p":
-                    if(PieceColor==="white"){
-                        return wp;
-                    }
-                    else{
-                        return bp;
-                    }
-            }
-    }
     return(
         <div className={(isOption? "option":props.color) + " p"+PieceColor+" space"}>
             {(Piece!=="None")&&
-                <img src={getIMG()} alt={Piece}/>
+                <img src={eval("Icons."+ (PieceColor==="white"? "w":"b")+Piece)} alt={Piece}/>
             }
         </div>
     )
