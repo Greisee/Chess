@@ -23,20 +23,53 @@ function CapturedList(props){
             bCap.push(cd);
         }
     }
+    function getScore(col){
+        let run=0;
+        if(col==="white"){
+            bCap.forEach((c)=>{
+                run+=c.value
+            })
+        }
+        else{
+            wCap.forEach((c)=>{
+                run+=c.value
+            })
+        }
+        return run;
+    }
     return(
         <div className="mainCL">
             <div className="w CL">
-                White:
+                <h4>
+                    {"White: "}
+                    {getScore("white")}
+                </h4>
+                <div>
+                    {bCap.map((val,ind)=>(
+                        <img className="capIMG" src={eval("Icons.b"+val.piece)} alt={val.piece}/>
+                    ))}
+                </div>
             </div>
             <div className="b CL">
-                Black:
+                <h4>
+                    {"Black: "}
+                    {getScore("black")}
+                </h4>
+                <div>
+                    {wCap.map((val,ind)=>(
+                        <img className="capIMG" src={eval("Icons.w"+val.piece)} alt={val.piece}/>
+                    ))}
+                </div>
+                
             </div>
         </div>
     )
 }
 class capData{
     constructor(p,col,val){
-
+        this.value=val;
+        this.piece=p;
+        this.color=col;
     }
 }
 export default CapturedList;

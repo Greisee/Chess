@@ -8,13 +8,16 @@
 }
 .CL{
     min-width: 40vh;
-    text-align: center;
+    text-align: center;   
+    background-color: none;
 }
 .w{
     color:white;   
-    background-color: none;
 }
 .b{
     color:black;
-    background-color: none;
+}
+.capIMG{
+    max-width: 5vh;
+    max-height: 5vh;
 }
