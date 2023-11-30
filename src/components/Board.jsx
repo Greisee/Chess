@@ -118,6 +118,9 @@ function Board(props){
                 }
             }
             if((m[0]===sd.y)&&(m[1]===sd.x)){
+                if(sd.piece!=="None"){
+                    props.addCap(sd.piece,sd.pieceColor);
+                }
                 bord[m[0]][m[1]].piece=pieceClicked.piece
                 bord[m[0]][m[1]].pieceColor=pieceClicked.pieceColor
                 bord[pieceClicked.y][pieceClicked.x].piece="None"

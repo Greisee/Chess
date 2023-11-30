@@ -4,25 +4,16 @@ import Icons from "./Icons.jsx"
 
 
 function CapturedList(props){
+    useEffect(()=>{
+        setWCap(props.wCap);
+    },[props.wCap]);
+    useEffect(()=>{
+        setBCap(props.bCap);
+    },[props.bCap])
+    
     const[wCap,setWCap]=useState([]);
     const[bCap,setBCap]=useState([]);
-    function addCap(p,col){
-        let v=0;
-        switch(p){
-            case "P": v=1;
-            case "N":v=3;
-            case "B":v=3;
-            case "R":v=5;
-            case "Q":v=9;
-        }
-        let cd=new capData(p,col,v);
-        if(col==="white"){
-            wCap.push(cd);
-        }
-        else{
-            bCap.push(cd);
-        }
-    }
+    
     function getScore(col){
         let run=0;
         if(col==="white"){
@@ -64,12 +55,5 @@ function CapturedList(props){
             </div>
         </div>
     )
-}
-class capData{
-    constructor(p,col,val){
-        this.value=val;
-        this.piece=p;
-        this.color=col;
-    }
 }
 export default CapturedList;
