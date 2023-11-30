@@ -8,6 +8,7 @@
 }
 .main{
     display: flex;
+    flex-direction: column;
     margin:50px;
     padding:none;
     align-items: center;
@@ -24,8 +25,8 @@ body{
     display: flex;
     margin:none;
     padding:none;
-    min-width:12vh;
-    min-height:12vh;
+    width:12vh;
+    height:12vh;
     align-items: center;
     justify-content: center;
 }

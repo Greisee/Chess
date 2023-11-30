@@ -1,6 +1,7 @@
 import Board from './components/Board.jsx';
 import "./components/chess.css";
 import {Helmet} from "react-helmet";
+import CapturedList from "./components/CapturedList.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       </header>
       <div className="main">
           <Board/>
+          <CapturedList/>
       </div>
     </div>
   );

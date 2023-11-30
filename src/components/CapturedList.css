@@ -1,0 +1,20 @@
+.mainCL{
+    display: flex;
+    flex-direction: row;
+    margin:none;
+    padding:none;
+    align-items: center;
+    justify-content: center;
+}
+.CL{
+    min-width: 40vh;
+    text-align: center;
+}
+.w{
+    color:white;   
+    background-color: none;
+}
+.b{
+    color:black;
+    background-color: none;
+}
