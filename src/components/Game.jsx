@@ -6,10 +6,6 @@ import CapturedList from "./CapturedList.jsx";
 function Game(){
     const[bCap,setBCap]=useState([]);
     const[wCap,setWCap]=useState([]);
-    const[ready,setReady]=useState(0);
-    useEffect(()=>{
-        setReady(ready+1)
-    },[wCap])
     function addCap(p,col){
         let v=0;
         switch(p){
@@ -46,7 +42,6 @@ function Game(){
     }
     return(
         <div>
-            <p>Hello{ready}</p>
             <Board addCap={addCap}/>
             {<CapturedList wCap={wCap} bCap={bCap}/>}
         </div>

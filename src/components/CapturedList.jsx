@@ -10,10 +10,8 @@ function CapturedList(props){
     useEffect(()=>{
         setBCap(props.bCap);
     },[props.bCap])
-    
     const[wCap,setWCap]=useState([]);
     const[bCap,setBCap]=useState([]);
-    
     function getScore(col){
         let run=0;
         if(col==="white"){
@@ -37,7 +35,7 @@ function CapturedList(props){
                 </h4>
                 <div>
                     {bCap.map((val,ind)=>(
-                        <img className="capIMG" src={eval("Icons.b"+val.piece)} alt={val.piece}/>
+                        <img className="capIMG" src={eval("Icons.b"+val.piece)} alt={val.piece} key={ind}/>
                     ))}
                 </div>
             </div>
@@ -48,7 +46,7 @@ function CapturedList(props){
                 </h4>
                 <div>
                     {wCap.map((val,ind)=>(
-                        <img className="capIMG" src={eval("Icons.w"+val.piece)} alt={val.piece}/>
+                        <img className="capIMG" src={eval("Icons.w"+val.piece)} alt={val.piece} key={ind}/>
                     ))}
                 </div>
                 

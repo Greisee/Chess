@@ -48,7 +48,7 @@ function Board(props){
     //on click functions-------------------------------------------------------
     function getMoves(sd){
         if((sd.pieceColor==="white")===turn){
-            let result=sortMove(sd);
+            let result=sortMove(sd,false);
             if(sd.piece==="K"){
                 result.forEach((m,ind)=>{
                     if(isInCheck(m,sd.pieceColor,board)){
@@ -65,11 +65,16 @@ function Board(props){
         }
         
     }
-    function sortMove(sd){
+    function sortMove(sd,pawnAttOnly){
         let result=[]
         switch(sd.piece){
             case "p": 
-                result=getPawnMoves(sd);
+                if(pawnAttOnly){
+                    result=getPawnAttacks(sd)
+                }
+                else{
+                    result=getPawnMoves(sd);
+                }
                 break;
             case "N":
                 result=getKnightMoves(sd);
@@ -116,6 +121,7 @@ function Board(props){
                     setCastles(temp)
                     setTurn(!turn);
                 }
+                castles[casCol]=[false,false];
             }
             if((m[0]===sd.y)&&(m[1]===sd.x)){
                 if(sd.piece!=="None"){
@@ -134,7 +140,7 @@ function Board(props){
         //check checkmate here
     }
     //moves per peice----------------------------------------------------------
-    function getPawnMoves(sd){
+    function getPawnMoves(sd){//when checking for future moves
         let res=[]
         let mult=1;
         if(sd.pieceColor==="white"){
@@ -150,7 +156,20 @@ function Board(props){
             res.push([sd.y+(2*mult),sd.x])
         }
         for(let i=-1;i<2;i+=2){
-            if(sd.x+i>0&&sd.x+i<8&&board[sd.y+mult][sd.x+i].piece!="None"&&board[sd.y+mult][sd.x+i].pieceColor!=sd.pieceColor){
+            if((sd.x+i>0&&sd.x+i<8&&board[sd.y+mult][sd.x+i].piece!="None"&&board[sd.y+mult][sd.x+i].pieceColor!=sd.pieceColor)){
+                res.push([sd.y+mult,sd.x+i])
+            }
+        }
+        return res
+    }
+    function getPawnAttacks(sd){
+        let res=[]
+        let mult=1;
+        if(sd.pieceColor==="white"){
+            mult=-1
+        }
+        for(let i=-1;i<2;i+=2){
+            if((sd.x+i>0&&sd.x+i<8&&(board[sd.y+mult][sd.x+i].piece==="None"||board[sd.y+mult][sd.x+i].pieceColor!==sd.pieceColor))){
                 res.push([sd.y+mult,sd.x+i])
             }
         }
@@ -247,7 +266,7 @@ function Board(props){
         bord.forEach(r=>{
             r.forEach(s=>{
                 if(s.piece!=="None"&&s.pieceColor!==pcol){
-                    let movs=sortMove(s)
+                    let movs=sortMove(s,true)
                     movs.forEach((m)=>{
                         if(m[0]===space[0]&&m[1]===space[1]){
                             res=true;
