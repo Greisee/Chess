@@ -1,6 +1,6 @@
 import {React,useState,useEffect} from "react";
 import "./chess.css";
-import Icons from "./Icons.jsx";//this is actually used, see eval(Icon)....
+import Icons from "./Icons.jsx";
 
 function Space(props){
     const[Piece,setPiece]=useState("");
@@ -17,7 +17,7 @@ function Space(props){
     },[props.isOption]);
     return(
         <div className={(isOption? "option":props.color) + " p"+PieceColor+" space"}>
-            <img src={Icons.empty} width={"15px"}/>
+            <img src={Icons.empty} width={"0px"}/>
             {(Piece!=="None")&&
                 <img src={eval("Icons."+ (PieceColor==="white"? "w":"b")+Piece)} alt={Piece}/>
             }
