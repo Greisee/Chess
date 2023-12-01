@@ -30,6 +30,7 @@ function CapturedList(props){
         <div className="mainCL">
             <div className="w CL">
                 <h4>
+                    {<img className="capIMG" src={Icons.wK}/>}
                     {"White: "}
                     {getScore("white")}
                 </h4>
@@ -41,6 +42,7 @@ function CapturedList(props){
             </div>
             <div className="b CL">
                 <h4>
+                    {<img className="capIMG" src={Icons.bK}/>}
                     {"Black: "}
                     {getScore("black")}
                 </h4>
