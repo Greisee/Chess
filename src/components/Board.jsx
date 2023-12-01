@@ -65,19 +65,19 @@ function Board(props){
         }
         
     }
-    function sortMove(sd,pawnAttOnly){
+    function sortMove(sd,checks,bord){
         let result=[]
         switch(sd.piece){
             case "p": 
-                if(pawnAttOnly){
-                    result=getPawnAttacks(sd)
+                if(checks){
+                    result=getPawnChecks(sd,bord)
                 }
                 else{
-                    result=getPawnMoves(sd);
+                    result=getPawnMoves(sd,bord);
                 }
                 break;
             case "N":
-                result=getKnightMoves(sd);
+                result=getKnightMoves(sd,bord);
                 break;
             case "B":
                 result=getBishopMoves(sd);
@@ -95,8 +95,7 @@ function Board(props){
         }
         return result;
     }
-    function move(sd){
-        let bord=board
+    function move(sd,bord){
         moves.forEach(m=>{
             if(pieceClicked.piece==="K"&&(m[0]===sd.y)&&(m[1]===sd.x)){
                 let casCol=0
@@ -162,14 +161,14 @@ function Board(props){
         }
         return res
     }
-    function getPawnAttacks(sd){
+    function getPawnChecks(sd){
         let res=[]
         let mult=1;
         if(sd.pieceColor==="white"){
             mult=-1
         }
         for(let i=-1;i<2;i+=2){
-            if((sd.x+i>0&&sd.x+i<8&&(board[sd.y+mult][sd.x+i].piece==="None"||board[sd.y+mult][sd.x+i].pieceColor!==sd.pieceColor))){
+            if((sd.x+i>0&&sd.x+i<8&&board[sd.y+mult][sd.x+i].pieceColor!==sd.pieceColor)){
                 res.push([sd.y+mult,sd.x+i])
             }
         }
@@ -277,6 +276,9 @@ function Board(props){
         })
         return res
     }
+    function isMoveLegal(space,bord){
+
+    }
     //utility/visual changes//-------------------------------------------------
     function hlMoves(bord, movs){
         movs.forEach(m=>{
@@ -299,7 +301,7 @@ function Board(props){
                     {board.map((val,key)=>(
                         <tr key={key}>
                             {val.map((val2,key2)=>(
-                                <td onClick={isPieceClicked? ()=>move(val2):()=>getMoves(val2)} key={key2}>
+                                <td onClick={isPieceClicked? ()=>move(val2,board.slice()):()=>getMoves(val2)} key={key2}>
                                     <Space 
                                         key={key+key2}
                                         color={val2.color} 
