@@ -9,6 +9,7 @@ function Board(props){
     const[moves,setMoves]=useState([[]]);
     const[turn,setTurn]=useState(true);
     const[castles,setCastles]=useState([[true,true],[true,true]]);
+    const[enPassant,setEnPassant]=useState(null);
     useEffect(()=>{
         startBoard();
     },[]);
@@ -97,7 +98,12 @@ function Board(props){
     }
     function move(sd,bord){
         moves.forEach(m=>{
-            if(pieceClicked.piece==="K"&&(m[0]===sd.y)&&(m[1]===sd.x)){
+            //-------------------------------special moves
+            if(enPassant!==null&&sd.x===enPassant[0][1]&&sd.y===enPassant[0][0]){
+                console.log("en passant")
+                bord[enPassant[1][0]][enPassant[1][1]].piece="None"
+            }
+            else if(pieceClicked.piece==="K"&&(m[0]===sd.y)&&(m[1]===sd.x)){
                 let casCol=0
                 if(pieceClicked.pieceColor==="black"){
                     casCol=1
@@ -122,7 +128,17 @@ function Board(props){
                 }
                 castles[casCol]=[false,false];
             }
+            //----------------------basic moves---------------------------
             if((m[0]===sd.y)&&(m[1]===sd.x)){
+                setEnPassant(null);
+                if(pieceClicked.piece==="p"){
+                    if(sd.y-pieceClicked.y===2){
+                        setEnPassant([[sd.y-1,sd.x],[sd.y,sd.x]])
+                    }
+                    else if(sd.y-pieceClicked.y===-2){
+                        setEnPassant([[sd.y+1,sd.x],[sd.y,sd.x]])
+                    }
+                }
                 if(sd.piece!=="None"){
                     props.addCap(sd.piece,sd.pieceColor);
                 }
@@ -157,6 +173,15 @@ function Board(props){
         for(let i=-1;i<2;i+=2){
             if((sd.x+i>0&&sd.x+i<8&&board[sd.y+mult][sd.x+i].piece!="None"&&board[sd.y+mult][sd.x+i].pieceColor!=sd.pieceColor)){
                 res.push([sd.y+mult,sd.x+i])
+            }
+        }
+        if(enPassant!==null){
+            let dir=-1;
+            if(sd.pieceCol==="black"){
+                dir=1;
+            }
+            if((sd.x-enPassant[0][1]===1||sd.x-enPassant[0][1]===-1)&&sd.y===enPassant[1][0]){
+                res.push(enPassant[0])
             }
         }
         return res
@@ -251,10 +276,19 @@ function Board(props){
         if(sd.pieceColor==="black"){
             castColor=1;
         }
-        if(castles[castColor][0]&&board[sd.y][sd.x+1].piece==="None"&&board[sd.y][sd.x+2].piece==="None"){
+        if(castles[castColor][0]&&
+            board[sd.y][sd.x+1].piece==="None"&&
+            board[sd.y][sd.x+2].piece==="None"&&
+            board[sd.y][sd.x+3].piece==="R"&&
+            board[sd.y][sd.x+3].pieceColor===sd.pieceColor){
             res.push([sd.y,sd.x+2])
         }
-        if(castles[castColor][1]&&board[sd.y][sd.x-1].piece==="None"&&board[sd.y][sd.x-2].piece==="None"&&board[sd.y][sd.x-3].piece==="None"){
+        if(castles[castColor][1]&&
+            board[sd.y][sd.x-1].piece==="None"&&
+            board[sd.y][sd.x-2].piece==="None"&&
+            board[sd.y][sd.x-3].piece==="None"&&
+            board[sd.y][sd.x-4].piece==="R"&&
+            board[sd.y][sd.x-4].pieceColor===sd.pieceColor){
             res.push([sd.y,sd.x-2])
         }
         return res

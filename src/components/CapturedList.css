@@ -7,9 +7,12 @@
     justify-content: center;
 }
 .CL{
-    min-width: 40vh;
+    width: 40vh;
     text-align: center;   
     background-color: none;
+    display:flex;
+    flex-direction: column;
+    margin:5vh
 }
 .w{
     color:white;   

@@ -13,18 +13,32 @@ function CapturedList(props){
     const[wCap,setWCap]=useState([]);
     const[bCap,setBCap]=useState([]);
     function getScore(col){
-        let run=0;
-        if(col==="white"){
-            bCap.forEach((c)=>{
-                run+=c.value
-            })
+        let wrun=0;
+        let brun=0;
+        bCap.forEach((c)=>{
+            wrun+=c.value
+        })
+        wCap.forEach((c)=>{
+            brun+=c.value
+        })
+        if(col=="white"){
+            if(wrun>brun){
+                return "+"+(wrun-brun);
+            }
+            else{
+                return null
+            }
+            
         }
         else{
-            wCap.forEach((c)=>{
-                run+=c.value
-            })
+            if(brun>wrun){
+                console.log(brun)
+                return "-"+(brun-wrun);
+            }
+            else{
+                return null;
+            }
         }
-        return run;
     }
     return(
         <div className="mainCL">
