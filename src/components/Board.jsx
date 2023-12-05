@@ -100,7 +100,7 @@ function Board(props){
         moves.forEach(m=>{
             //-------------------------------special moves
             if(enPassant!==null&&sd.x===enPassant[0][1]&&sd.y===enPassant[0][0]){
-                console.log("en passant")
+                props.addCap("p",sd.pieceColor);
                 bord[enPassant[1][0]][enPassant[1][1]].piece="None"
             }
             else if(pieceClicked.piece==="K"&&(m[0]===sd.y)&&(m[1]===sd.x)){
