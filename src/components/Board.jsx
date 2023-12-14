@@ -14,7 +14,7 @@ function Board(props){
         startBoard();
     },[]);
     //init functions---------------------------------------------------------------
-    function startBoard(){
+    function startBoard(){//creates the board itself, without pieces.
         let res=[]
         for(let i=0;i<8;i++){
             let row=[]
@@ -27,10 +27,11 @@ function Board(props){
         res=spawnPieces(res);
         setBoard(res);
     }
-    function spawnPieces(bord){
+    function spawnPieces(bord){//resets the board to the beginning state of a chessboard
+        //exists as it's own function to let players reset the board after a game without reloading the page
             for(let j=0;j<2;j++){
-            bord[(j+7)%8][4].piece="K";
-            bord[(j+7)%8][3].piece="Q";
+                bord[(j+7)%8][4].piece="K";
+                bord[(j+7)%8][3].piece="Q";
             for(let i=0;i<8;i++){
                 bord[1][i].piece="p";
                 bord[6][i].piece="p";
@@ -47,7 +48,7 @@ function Board(props){
         return bord
     }
     //on click functions-------------------------------------------------------
-    function getMoves(sd){
+    function getMoves(sd){//highlights the moves of whatever piece is clicked, if the piece is the correct color
         if((sd.pieceColor==="white")===turn){
             let result=sortMove(sd,false);
             if(sd.piece==="K"){
@@ -67,6 +68,8 @@ function Board(props){
         
     }
     function sortMove(sd,checks,bord){
+        //called to get an array of all legal moves for whatever piece was clicked- 
+        //the in-between of getmove and get___moves
         let result=[]
         switch(sd.piece){
             case "p": 
@@ -97,8 +100,9 @@ function Board(props){
         return result;
     }
     function move(sd,bord){
+        //actually moves the piece to the correct space 
         moves.forEach(m=>{
-            //-------------------------------special moves
+            //-------------------------------special moves- castling, en passant, promotion--
             if(enPassant!==null&&sd.x===enPassant[0][1]&&sd.y===enPassant[0][0]){
                 props.addCap("p",sd.pieceColor);
                 bord[enPassant[1][0]][enPassant[1][1]].piece="None"
@@ -128,7 +132,7 @@ function Board(props){
                 }
                 castles[casCol]=[false,false];
             }
-            //----------------------basic moves---------------------------
+            //----------------------basic moves-1-directional swap and delete the original
             if((m[0]===sd.y)&&(m[1]===sd.x)){
                 setEnPassant(null);
                 if(pieceClicked.piece==="p"){
@@ -154,8 +158,9 @@ function Board(props){
         setPieceClicked(null)
         //check checkmate here
     }
-    //moves per peice----------------------------------------------------------
-    function getPawnMoves(sd){//when checking for future moves
+    //moves for each peice----------------------
+        //tried to do these as effeciently as possible instead of if-else cycles
+    function getPawnMoves(sd){//
         let res=[]
         let mult=1;
         if(sd.pieceColor==="white"){
@@ -187,6 +192,7 @@ function Board(props){
         return res
     }
     function getPawnChecks(sd){
+        //used to see if a pawn can attack a king(isInCheck function)
         let res=[]
         let mult=1;
         if(sd.pieceColor==="white"){
@@ -272,6 +278,7 @@ function Board(props){
                         }
             }
         }
+        //adding the castling moves if they are applicable
         let castColor=0;
         if(sd.pieceColor==="black"){
             castColor=1;
@@ -295,6 +302,7 @@ function Board(props){
     }
     //check/checkmate-----------------------------------------------------------
     function isInCheck(space,pcol,bord){
+        //broken currently, some moves will still not be found as check
         let res=false
         bord.forEach(r=>{
             r.forEach(s=>{
@@ -310,11 +318,9 @@ function Board(props){
         })
         return res
     }
-    function isMoveLegal(space,bord){
-
-    }
     //utility/visual changes//-------------------------------------------------
     function hlMoves(bord, movs){
+        //simple highlighting function for each space in the movs list
         movs.forEach(m=>{
             bord[m[0]][m[1]].isOption=true
         })
@@ -322,6 +328,7 @@ function Board(props){
         setBoard(bord);
     }
     function clearMoves(bord){
+        //resets the moves state back to empty when needed
         moves.forEach(m=>{
             bord[m[0]][m[1]].isOption=false;
         })
