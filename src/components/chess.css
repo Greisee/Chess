@@ -25,8 +25,8 @@ body{
     display: flex;
     margin:none;
     padding:none;
-    width:12vh;
-    height:12vh;
+    width:8vw;
+    height:8vw;
     align-items: center;
     justify-content: center;
 }
@@ -50,4 +50,7 @@ body{
 img{
     max-width: 95%;
     max-height: 95%;
+}
+img.mobile{
+
 }
